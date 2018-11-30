@@ -61,9 +61,10 @@ Client.on('message', (message)=>{
     }
 
 
-    if(msg.startsWith(prefix + "evento")){
+    if(msg.startsWith(prefix + "check")){
         let author = message.member;
-        let role = message.guild.roles.find('name', "event");
+        let role = message.guild.roles.find('name', "Nieve");
+            
         if(author.roles.has(role.id)){
             message.reply({embed:{
                 color: 0x00cc99,
@@ -79,6 +80,33 @@ Client.on('message', (message)=>{
         }
 
     }
+
+    if(msg.startsWith(prefix + "eventjoin")){
+        let author = message.member;
+        let role = message.guild.roles.find('name', "Nieve");
+        if (author.roles.has(role.id)){
+            message.reply({embed:{
+                color: 0x00cc99,
+                description: "¡Ya estas participando!"
+            }});
+            return;
+        }else{
+
+            try {
+                message.member.addRole(role.id)
+                message.reply ({embed:{
+                    color: 0x0cc99,
+                    description: "¡Ahora estas participando en el evento! Para ver tus regalos escribe `+regalos`"
+                }})
+            } 
+            
+            catch (e) {
+                console.log("Un usuario intento unirse y falló")
+            }
+
+        }
+        }
+    
 
     // level system
     con.query(`SELECT * FROM xp WHERE id ='${message.author.id}'`, (err, rows) => {
@@ -98,23 +126,21 @@ Client.on('message', (message)=>{
     })
 
     //
-    xp.find({serverID: message.guild.id}).sort([['xp', 'descending']]).exec(err, res){
-        if(err) throw err;
 
-        .setTitle("Event Leaderboard")
-        //
-    }
-
-    if(msg.startsWith (prefix + "xp")){
+    if(msg.startsWith (prefix + "regalos")){
         let target = message.mentions.users.first() || message.author;
 
     con.query(`SELECT * FROM xp WHERE id = '${target.id}'`, (err, rows) => {
         if(err) throw err;
 
-        if(!rows[0]) return message.channel.send("¡0 XP! Vaya, parece que hay alguien perdedor aquí.");
+        if(!rows[0]) return message.channel.send({embed:{
+            color: 0x0cc99,
+            description:"¡0 regalos! Vaya, parece que hay alguien perdedor aquí."}});
 
         let xp = rows[0].xp;
-        message.channel.send ("Tienes " + (xp) + " xp.");
+        message.channel.send ({embed:{
+            color: 0x0cc99,
+            description: "Tienes " + (xp) + " regalos."}});
     })
     }
     
