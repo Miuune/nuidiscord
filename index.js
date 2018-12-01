@@ -152,4 +152,4 @@ Client.on('message', (message)=>{
 
 
 // discord login
-client.login(process.env.BOT_TOKEN);
+Client.login("NTE2MDA5NjAyODAyOTA5MTk5.DtvoJw.1zqyE40dqHk_FIlzWWMYoUrChP8");
